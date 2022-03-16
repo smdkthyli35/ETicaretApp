@@ -1,4 +1,5 @@
 ﻿using ETicaretApp.Application.Repositories;
+using ETicaretApp.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,7 +23,7 @@ namespace ETicaretApp.API.Controllers
         }
 
         [HttpGet]
-        public async void Get()
+        public async Task Get()
         {
             await _productWriteRepository.AddRangeAsync(new()
             {
@@ -31,6 +32,13 @@ namespace ETicaretApp.API.Controllers
                 new() { Id = Guid.NewGuid(), Name = "Product 3", Price = 300, CreatedDate = DateTime.Now, Stock = 30 }
             });
             await _productWriteRepository.SaveAsync();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            Product product = await _productReadRepository.GetByIdAsync(id);
+            return Ok(product);
         }
     }
 }
