@@ -1,5 +1,6 @@
 ﻿using ETicaretApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,9 @@ namespace ETicaretApp.Persistence
 {
     public static class ServiceRegistration
     {
-        public static void AddPersistenceServices(this IServiceCollection services)
+        public static void AddPersistenceServices(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<ETicaretAppDbContext>(options => options.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=ETicaretAppDb;Trusted_Connection=True;"));
+            services.AddDbContext<ETicaretAppDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
         }
     }
 }

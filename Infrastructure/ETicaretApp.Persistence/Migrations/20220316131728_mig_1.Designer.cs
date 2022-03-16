@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ETicaretApp.Persistence.Migrations
 {
     [DbContext(typeof(ETicaretAppDbContext))]
-    [Migration("20220316124219_mig_1")]
+    [Migration("20220316131728_mig_1")]
     partial class mig_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
