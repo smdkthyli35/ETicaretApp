@@ -29,6 +29,10 @@ namespace ETicaretApp.API
         {
             services.AddPersistenceServices(Configuration);
 
+            services.AddCors(options => options.AddDefaultPolicy(policy =>
+                policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()
+            ));
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -45,6 +49,8 @@ namespace ETicaretApp.API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ETicaretApp.API v1"));
             }
+
+            app.UseCors();
 
             app.UseHttpsRedirection();
 
