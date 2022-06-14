@@ -1,4 +1,5 @@
 using ETicaretApp.Application.Validators.Products;
+using ETicaretApp.Infrastructure.Filters;
 using ETicaretApp.Persistence;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +36,7 @@ namespace ETicaretApp.API
                 policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()
             ));
 
-            services.AddControllers()
+            services.AddControllers(options => options.Filters.Add<ValidationFilter>())
                 .AddFluentValidation(conf => conf.RegisterValidatorsFromAssemblyContaining<CreateProductValidator>())
                 .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
 
