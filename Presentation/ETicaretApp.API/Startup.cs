@@ -56,6 +56,8 @@ namespace ETicaretApp.API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ETicaretApp.API v1"));
             }
 
+            app.UseStaticFiles();
+
             app.UseCors();
 
             app.UseHttpsRedirection();
