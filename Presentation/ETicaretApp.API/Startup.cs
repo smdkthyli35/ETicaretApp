@@ -1,4 +1,5 @@
 using ETicaretApp.Application.Validators.Products;
+using ETicaretApp.Infrastructure;
 using ETicaretApp.Infrastructure.Filters;
 using ETicaretApp.Persistence;
 using FluentValidation.AspNetCore;
@@ -31,6 +32,7 @@ namespace ETicaretApp.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddPersistenceServices(Configuration);
+            services.AddInfrastructureServices();
 
             services.AddCors(options => options.AddDefaultPolicy(policy =>
                 policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod()
