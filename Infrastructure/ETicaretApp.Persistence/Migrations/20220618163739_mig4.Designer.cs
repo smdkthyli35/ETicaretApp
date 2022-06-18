@@ -4,14 +4,16 @@ using ETicaretApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ETicaretApp.Persistence.Migrations
 {
     [DbContext(typeof(ETicaretAppDbContext))]
-    partial class ETicaretAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220618163739_mig4")]
+    partial class mig4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
