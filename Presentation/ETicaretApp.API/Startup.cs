@@ -1,6 +1,7 @@
 using ETicaretApp.Application.Validators.Products;
 using ETicaretApp.Infrastructure;
 using ETicaretApp.Infrastructure.Filters;
+using ETicaretApp.Infrastructure.Services.Storage.Local;
 using ETicaretApp.Persistence;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
@@ -34,6 +35,7 @@ namespace ETicaretApp.API
             services.AddPersistenceServices(Configuration);
             services.AddInfrastructureServices();
 
+            services.AddStorage<LocalStorage>();
             //services.AddStorage(StorageType.Azure);
 
             services.AddCors(options => options.AddDefaultPolicy(policy =>
