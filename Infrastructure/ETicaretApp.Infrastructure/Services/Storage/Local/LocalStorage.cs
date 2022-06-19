@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace ETicaretApp.Infrastructure.Services.Storage.Local
 {
-    public class LocalStorage : ILocalStorage
+    public class LocalStorage : Storage, ILocalStorage
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -19,7 +19,6 @@ namespace ETicaretApp.Infrastructure.Services.Storage.Local
         {
             _webHostEnvironment = webHostEnvironment;
         }
-
 
         public async Task DeleteAsync(string path, string fileName)
              => File.Delete($"{path}\\{fileName}");
@@ -60,8 +59,10 @@ namespace ETicaretApp.Infrastructure.Services.Storage.Local
 
             foreach (IFormFile file in files)
             {
-                await CopyFileAsync($"{uploadPath}\\{file.Name}", file);
-                datas.Add((file.Name, $"{path}\\{file.Name}"));
+                string fileNewName = await FileRenameAsync(path, file.Name, HasFile);
+
+                await CopyFileAsync($"{uploadPath}\\{fileNewName}", file);
+                datas.Add((fileNewName, $"{path}\\{fileNewName}"));
             }
 
             return datas;

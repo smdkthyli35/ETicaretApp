@@ -21,11 +21,12 @@ namespace ETicaretApp.Infrastructure
             services.AddScoped<IStorageService, StorageService>();
         }
 
-        public static void AddStorage<T>(this IServiceCollection services) where T : class, IStorage
+        public static void AddStorage<T>(this IServiceCollection services) where T : Storage, IStorage
         {
             services.AddScoped<IStorage, T>();
         }
 
+        //Bu yöntem pek kullanışlı değil!
         public static void AddStorage(this IServiceCollection services, StorageType storageType)
         {
             switch (storageType)
