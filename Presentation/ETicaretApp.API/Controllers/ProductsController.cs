@@ -1,4 +1,5 @@
 ﻿using ETicaretApp.Application.Features.Commands.Product.CreateProduct;
+using ETicaretApp.Application.Features.Commands.Product.UpdateProduct;
 using ETicaretApp.Application.Features.Queries.Product.GetAllProduct;
 using ETicaretApp.Application.Features.Queries.Product.GetByIdProduct;
 using ETicaretApp.Application.Repositories;
@@ -71,13 +72,9 @@ namespace ETicaretApp.API.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(VM_Update_Product model)
+        public async Task<IActionResult> Update([FromBody] UpdateProductCommandRequest updateProductCommandRequest)
         {
-            Product product = await _productReadRepository.GetByIdAsync(model.Id);
-            product.Stock = model.Stock;
-            product.Name = model.Name;
-            product.Price = model.Price;
-            await _productWriteRepository.SaveAsync();
+            UpdateProductCommandResponse response = await _mediator.Send(updateProductCommandRequest);
             return Ok();
         }
 
