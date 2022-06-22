@@ -1,4 +1,5 @@
-﻿using ETicaretApp.Application.Features.Queries.GetAllProduct;
+﻿using ETicaretApp.Application.Features.Commands.CreateProduct;
+using ETicaretApp.Application.Features.Queries.GetAllProduct;
 using ETicaretApp.Application.Repositories;
 using ETicaretApp.Application.RequestParameters;
 using ETicaretApp.Application.ViewModels.Products;
@@ -61,17 +62,10 @@ namespace ETicaretApp.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(VM_Create_Product model)
+        public async Task<IActionResult> Post(CreateProductCommandRequest createProductCommandRequest)
         {
-            await _productWriteRepository.AddAsync(new()
-            {
-                Name = model.Name,
-                Price = model.Price,
-                Stock = model.Stock
-            });
-
-            await _productWriteRepository.SaveAsync();
-            return StatusCode((int)HttpStatusCode.Created);
+            CreateProductCommandResponse response = await _mediator.Send(createProductCommandRequest);
+            return Ok(response);
         }
 
         [HttpPut]
