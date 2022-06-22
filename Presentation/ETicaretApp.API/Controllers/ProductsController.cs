@@ -1,6 +1,7 @@
 ﻿using ETicaretApp.Application.Features.Commands.Product.CreateProduct;
 using ETicaretApp.Application.Features.Commands.Product.RemoveProduct;
 using ETicaretApp.Application.Features.Commands.Product.UpdateProduct;
+using ETicaretApp.Application.Features.Commands.ProductImageFile.UploadProductImage;
 using ETicaretApp.Application.Features.Queries.Product.GetAllProduct;
 using ETicaretApp.Application.Features.Queries.Product.GetByIdProduct;
 using ETicaretApp.Application.Repositories;
@@ -86,18 +87,13 @@ namespace ETicaretApp.API.Controllers
             return Ok();
         }
 
-        //[HttpPost]
-        //[Route("Action")]
-        //public async Task<IActionResult> Upload()
-        ////{
-        ////    //var datas = await _fileService.UploadAsync("resource/product-images", Request.Form.Files);
-        ////    await _productImageFileWriteRepository.AddRangeAsync(datas.Select(d => new ProductImageFile()
-        ////    {
-        ////        FileName = d.fileName,
-        ////        Path = d.path,
-        ////    }).ToList());
-        ////    await _productImageFileWriteRepository.SaveAsync();
-        ////    return Ok();
-        //}
+        [HttpPost]
+        [Route("[action]")]
+        public async Task<IActionResult> Upload([FromQuery] UploadProductImageCommandRequest uploadProductImageCommandRequest)
+        {
+            uploadProductImageCommandRequest.Files = Request.Form.Files;
+            UploadProductImageCommandResponse response = await _mediator.Send(uploadProductImageCommandRequest);
+            return Ok();
+        }
     }
 }
