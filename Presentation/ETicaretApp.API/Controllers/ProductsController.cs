@@ -1,4 +1,5 @@
 ﻿using ETicaretApp.Application.Features.Commands.Product.CreateProduct;
+using ETicaretApp.Application.Features.Commands.Product.RemoveProduct;
 using ETicaretApp.Application.Features.Commands.Product.UpdateProduct;
 using ETicaretApp.Application.Features.Queries.Product.GetAllProduct;
 using ETicaretApp.Application.Features.Queries.Product.GetByIdProduct;
@@ -78,11 +79,10 @@ namespace ETicaretApp.API.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> Delete([FromRoute] RemoveProductCommandRequest removeProductCommandRequest)
         {
-            await _productWriteRepository.RemoveAsync(id);
-            await _productWriteRepository.SaveAsync();
+            RemoveProductCommandResponse response = await _mediator.Send(removeProductCommandRequest);
             return Ok();
         }
 
