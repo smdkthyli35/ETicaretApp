@@ -1,5 +1,6 @@
-﻿using ETicaretApp.Application.Features.Commands.CreateProduct;
-using ETicaretApp.Application.Features.Queries.GetAllProduct;
+﻿using ETicaretApp.Application.Features.Commands.Product.CreateProduct;
+using ETicaretApp.Application.Features.Queries.Product.GetAllProduct;
+using ETicaretApp.Application.Features.Queries.Product.GetByIdProduct;
 using ETicaretApp.Application.Repositories;
 using ETicaretApp.Application.RequestParameters;
 using ETicaretApp.Application.ViewModels.Products;
@@ -55,10 +56,11 @@ namespace ETicaretApp.API.Controllers
             return Ok(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> Get([FromRoute] GetByIdProductQueryRequest getByIdProductQueryRequest)
         {
-            return Ok(await _productReadRepository.GetByIdAsync(id, false));
+            GetByIdProductQueryResponse response = await _mediator.Send(getByIdProductQueryRequest);
+            return Ok(response);
         }
 
         [HttpPost]
