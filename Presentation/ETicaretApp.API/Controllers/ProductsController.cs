@@ -5,6 +5,7 @@ using ETicaretApp.Application.Features.Commands.ProductImageFile.RemoveProductIm
 using ETicaretApp.Application.Features.Commands.ProductImageFile.UploadProductImage;
 using ETicaretApp.Application.Features.Queries.Product.GetAllProduct;
 using ETicaretApp.Application.Features.Queries.Product.GetByIdProduct;
+using ETicaretApp.Application.Features.Queries.ProductImageFile.GetProductImages;
 using ETicaretApp.Application.Repositories;
 using ETicaretApp.Application.RequestParameters;
 using ETicaretApp.Application.ViewModels.Products;
@@ -26,30 +27,10 @@ namespace ETicaretApp.API.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        readonly private IProductWriteRepository _productWriteRepository;
-        readonly private IProductReadRepository _productReadRepository;
-        private readonly IWebHostEnvironment _webHostEnvironment;
-        //readonly IFileService _fileService;
-        readonly IFileWriteRepository _fileWriteRepository;
-        readonly IFileReadRepository _fileReadRepository;
-        readonly IProductImageFileReadRepository _productImageFileReadRepository;
-        readonly IProductImageFileWriteRepository _productImageFileWriteRepository;
-        readonly IInvoiceFileReadRepository _invoiceFileReadRepository;
-        readonly IInvoiceFileWriteRepository _İnvoiceFileWriteRepository;
         readonly IMediator _mediator;
 
-        public ProductsController(IProductWriteRepository productWriteRepository, IProductReadRepository productReadRepository, IWebHostEnvironment webHostEnvironment, /*IFileService fileService,*/ IFileWriteRepository fileWriteRepository, IFileReadRepository fileReadRepository, IProductImageFileReadRepository productImageFileReadRepository, IProductImageFileWriteRepository productImageFileWriteRepository, IInvoiceFileReadRepository invoiceFileReadRepository, IInvoiceFileWriteRepository invoiceFileWriteRepository, IMediator mediator)
+        public ProductsController(IMediator mediator)
         {
-            _productWriteRepository = productWriteRepository;
-            _productReadRepository = productReadRepository;
-            _webHostEnvironment = webHostEnvironment;
-            //_fileService = fileService;
-            _fileWriteRepository = fileWriteRepository;
-            _fileReadRepository = fileReadRepository;
-            _productImageFileReadRepository = productImageFileReadRepository;
-            _productImageFileWriteRepository = productImageFileWriteRepository;
-            _invoiceFileReadRepository = invoiceFileReadRepository;
-            _İnvoiceFileWriteRepository = invoiceFileWriteRepository;
             _mediator = mediator;
         }
 
@@ -103,6 +84,13 @@ namespace ETicaretApp.API.Controllers
             removeProductImageCommandRequest.ImageId = imageId;
             RemoveProductImageCommandResponse response = await _mediator.Send(removeProductImageCommandRequest);
             return Ok();
+        }
+
+        [HttpGet("[action]/{id}")]
+        public async Task<IActionResult> GetProductImages([FromRoute] GetProductImagesQueryRequest getProductImagesCommandRequest)
+        {
+            List<GetProductImagesQueryResponse> response = await _mediator.Send(getProductImagesCommandRequest);
+            return Ok(response);
         }
     }
 }
