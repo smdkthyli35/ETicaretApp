@@ -1,6 +1,7 @@
 ﻿using ETicaretApp.Application.Features.Commands.Product.CreateProduct;
 using ETicaretApp.Application.Features.Commands.Product.RemoveProduct;
 using ETicaretApp.Application.Features.Commands.Product.UpdateProduct;
+using ETicaretApp.Application.Features.Commands.ProductImageFile.RemoveProductImage;
 using ETicaretApp.Application.Features.Commands.ProductImageFile.UploadProductImage;
 using ETicaretApp.Application.Features.Queries.Product.GetAllProduct;
 using ETicaretApp.Application.Features.Queries.Product.GetByIdProduct;
@@ -93,6 +94,14 @@ namespace ETicaretApp.API.Controllers
         {
             uploadProductImageCommandRequest.Files = Request.Form.Files;
             UploadProductImageCommandResponse response = await _mediator.Send(uploadProductImageCommandRequest);
+            return Ok();
+        }
+
+        [HttpDelete("[action]/{Id}")]
+        public async Task<IActionResult> DeleteProductImage([FromRoute] RemoveProductImageCommandRequest removeProductImageCommandRequest, [FromQuery] string imageId)
+        {
+            removeProductImageCommandRequest.ImageId = imageId;
+            RemoveProductImageCommandResponse response = await _mediator.Send(removeProductImageCommandRequest);
             return Ok();
         }
     }
