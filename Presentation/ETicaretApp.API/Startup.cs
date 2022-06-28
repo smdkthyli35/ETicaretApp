@@ -6,6 +6,7 @@ using ETicaretApp.Infrastructure.Services.Storage.Azure;
 using ETicaretApp.Infrastructure.Services.Storage.Local;
 using ETicaretApp.Persistence;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -57,22 +58,22 @@ namespace ETicaretApp.API
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ETicaretApp.API", Version = "v1" });
             });
 
-            services.AddAuthentication("Admin")
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new()
-                    {
-                        ValidateAudience = true, //Oluþturulacak token deðerini kimlerin hangi originlerin/sitelerin kullanacaðýný belirlediðimiz deðerdir.
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer("Admin", options =>
+                 {
+                     options.TokenValidationParameters = new()
+                     {
+                         ValidateAudience = true, //Oluþturulacak token deðerini kimlerin hangi originlerin/sitelerin kullanacaðýný belirlediðimiz deðerdir.
                         ValidateIssuer = true, //Oluþturulacak token deðerini kimin daðýttýðýný ifade edeceðimiz alandýr.
                         ValidateLifetime = true, //Oluþturulan token deðerinin süresini kontrol edecek olan doðrulamadýr.
                         ValidateIssuerSigningKey = true, //Üretilecek token deðerinin uygulamamýza ait bir deðer olduðunu ifade eden security key verisinin doðrulanmasýdýr.
 
                         ValidAudience = Configuration["Token:Audience"],
-                        ValidIssuer = Configuration["Token:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:SecurityKey"]))
+                         ValidIssuer = Configuration["Token:Issuer"],
+                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Token:SecurityKey"]))
 
-                    };
-                });
+                     };
+                 });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,6 +93,8 @@ namespace ETicaretApp.API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
