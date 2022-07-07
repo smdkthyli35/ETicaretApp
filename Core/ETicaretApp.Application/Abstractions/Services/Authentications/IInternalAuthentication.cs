@@ -8,6 +8,6 @@ namespace ETicaretApp.Application.Abstractions.Services.Authentications
 {
     public interface IInternalAuthentication
     {
-        Task LoginAsync();
+        Task<DTOs.Token> LoginAsync(string usernameOrEmail, string password, int accessTokenLifeTime);
     }
 }
