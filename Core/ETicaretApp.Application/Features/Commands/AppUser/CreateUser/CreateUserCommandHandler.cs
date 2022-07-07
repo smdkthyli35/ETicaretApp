@@ -1,11 +1,5 @@
 ﻿using ETicaretApp.Application.Abstractions.Services;
-using ETicaretApp.Application.Exceptions;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 

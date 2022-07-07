@@ -2,6 +2,7 @@
 using ETicaretApp.Application.Abstractions.Token;
 using ETicaretApp.Application.DTOs;
 using ETicaretApp.Application.DTOs.Facebook;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -80,9 +81,46 @@ namespace ETicaretApp.Persistence.Services
             throw new Exception("Invalid external authentication.");
         }
 
-        public Task<Token> GoogleLoginAsync(string idToken, int accessTokenLifeTime)
+        public async Task<Token> GoogleLoginAsync(string idToken, int accessTokenLifeTime)
         {
-            throw new NotImplementedException();
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string> { _configuration["ExternalLoginSettings:Google:Client_ID"] }
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
+            var info = new UserLoginInfo("GOOGLE", payload.Subject, "GOOGLE");
+
+            Domain.Entities.Identity.AppUser user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+
+            bool result = user != null;
+
+            if (user is null)
+            {
+                user = await _userManager.FindByEmailAsync(payload.Email);
+                if (user is null)
+                {
+                    user = new()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Email = payload.Email,
+                        UserName = payload.Email,
+                        NameSurname = payload.Name
+                    };
+
+                    var identityResult = await _userManager.CreateAsync(user);
+                    result = identityResult.Succeeded;
+                }
+            }
+
+            if (result)
+                await _userManager.AddLoginAsync(user, info);
+            else
+                throw new Exception("Invalid external authentication.");
+
+            Token token = _tokenHandler.CreateAccessToken(5);
+
+            return token;
         }
 
         public Task LoginAsync()
