@@ -10,5 +10,6 @@ namespace ETicaretApp.Application.Abstractions.Services
     public interface IUserService
     {
         Task<CreateUserResponse> CreateAsync(CreateUserDto model);
+        Task UpdateRefreshToken(string refreshToken, string userId, DateTime accessTokenDate, int refreshTokenLifeTime);
     }
 }
