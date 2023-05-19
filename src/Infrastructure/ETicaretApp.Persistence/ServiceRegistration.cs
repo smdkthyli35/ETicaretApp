@@ -1,4 +1,6 @@
-﻿using ETicaretApp.Persistence.Contexts;
+﻿using ETicaretApp.Application.Repositories;
+using ETicaretApp.Persistence.Contexts;
+using ETicaretApp.Persistence.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,7 +19,14 @@ namespace ETicaretApp.Persistence
             services.AddDbContext<ETicaretAppDbContext>(opt =>
             {
                 opt.UseNpgsql(configuration.GetConnectionString("PostgreSql"));
-            });
+            }, ServiceLifetime.Singleton);
+
+            services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
+            services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
+            services.AddScoped<IOrderReadRepository, OrderReadRepository>();
+            services.AddScoped<IOrderWriteRepository, OrderWriteRepository>();
+            services.AddScoped<IProductReadRepository, ProductReadRepository>();
+            services.AddScoped<IProductWriteRepository, ProductWriteRepository>();
         }
     }
 }
