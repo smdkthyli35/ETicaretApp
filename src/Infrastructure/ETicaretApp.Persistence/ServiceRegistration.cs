@@ -19,7 +19,7 @@ namespace ETicaretApp.Persistence
             services.AddDbContext<ETicaretAppDbContext>(opt =>
             {
                 opt.UseNpgsql(configuration.GetConnectionString("PostgreSql"));
-            }, ServiceLifetime.Singleton);
+            });
 
             services.AddScoped<ICustomerReadRepository, CustomerReadRepository>();
             services.AddScoped<ICustomerWriteRepository, CustomerWriteRepository>();
