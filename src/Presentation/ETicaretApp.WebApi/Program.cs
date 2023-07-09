@@ -1,4 +1,5 @@
 using ETicaretApp.Application.Validators.Products;
+using ETicaretApp.Infrastructure;
 using ETicaretApp.Infrastructure.Filters;
 using ETicaretApp.Persistence;
 using FluentValidation;
@@ -10,6 +11,7 @@ builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>
     .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
 
 builder.Services.AddPersistenceServices(builder.Configuration);
+builder.Services.AddInfstractureServices();
 
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
