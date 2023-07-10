@@ -1,6 +1,5 @@
 ﻿using ETicaretApp.Application.Repositories;
 using ETicaretApp.Application.RequestParameters;
-using ETicaretApp.Application.Services;
 using ETicaretApp.Application.ViewModels.Products;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +15,6 @@ namespace ETicaretApp.WebApi.Controllers
         private readonly IProductReadRepository _productReadRepository;
         private readonly IProductWriteRepository _productWriteRepository;
         private readonly IWebHostEnvironment _webHostEnvironment;
-        private readonly IFileService _fileService;
 
         public ProductsController(IProductReadRepository productReadRepository, IProductWriteRepository productWriteRepository, IWebHostEnvironment webHostEnvironment)
         {
@@ -88,7 +86,7 @@ namespace ETicaretApp.WebApi.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Upload()
         {
-            await _fileService.UploadAsync("resource/product-images", Request.Form.Files);
+            //await _fileService.UploadAsync("resource/product-images", Request.Form.Files);
             return Ok();
         }
     }
