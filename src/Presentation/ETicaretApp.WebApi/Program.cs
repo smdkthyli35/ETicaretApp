@@ -1,6 +1,7 @@
 using ETicaretApp.Application.Validators.Products;
 using ETicaretApp.Infrastructure;
 using ETicaretApp.Infrastructure.Filters;
+using ETicaretApp.Infrastructure.Services.Storage.Azure;
 using ETicaretApp.Infrastructure.Services.Storage.Local;
 using ETicaretApp.Persistence;
 using FluentValidation;
@@ -14,6 +15,7 @@ builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfstractureServices();
 builder.Services.AddStorage<LocalStorage>();
+//builder.Services.AddStorage<AzureStorage>();
 //builder.Services.AddStorage(ETicaretApp.Infrastructure.Enums.StorageType.Azure);
 
 builder.Services.AddFluentValidationAutoValidation();
