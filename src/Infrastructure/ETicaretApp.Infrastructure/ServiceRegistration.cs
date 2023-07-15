@@ -10,7 +10,7 @@ namespace ETicaretApp.Infrastructure
 {
     public static class ServiceRegistration
     {
-        public static void AddInfstractureServices(this IServiceCollection services)
+        public static void AddInfrastractureServices(this IServiceCollection services)
         {
             services.AddScoped<IStorageService, StorageService>();
         }

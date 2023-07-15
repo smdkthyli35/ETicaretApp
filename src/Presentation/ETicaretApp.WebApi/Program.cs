@@ -1,3 +1,4 @@
+using ETicaretApp.Application;
 using ETicaretApp.Application.Validators.Products;
 using ETicaretApp.Infrastructure;
 using ETicaretApp.Infrastructure.Filters;
@@ -13,7 +14,9 @@ builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>
     .ConfigureApiBehaviorOptions(options => options.SuppressModelStateInvalidFilter = true);
 
 builder.Services.AddPersistenceServices(builder.Configuration);
-builder.Services.AddInfstractureServices();
+builder.Services.AddInfrastractureServices();
+builder.Services.AddApplicationServices();
+
 builder.Services.AddStorage<LocalStorage>();
 //builder.Services.AddStorage<AzureStorage>();
 //builder.Services.AddStorage(ETicaretApp.Infrastructure.Enums.StorageType.Azure);
