@@ -30,9 +30,9 @@ namespace ETicaretApp.WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] GetAllProductQueryRequest getAllProductQueryRequest)
+        public async Task<IActionResult> Get([FromQuery] Pagination pagination)
         {
-            GetAllProductQueryResponse response = await _mediator.Send(getAllProductQueryRequest);
+            GetAllProductQueryResponse response = await _mediator.Send(new GetAllProductQueryRequest(pagination));
             return Ok(response);
         }
 
