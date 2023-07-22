@@ -27,7 +27,7 @@ namespace ETicaretApp.WebApi.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Login(LoginUserCommandRequest loginUserCommandRequest)
         {
-            LoginUserCommandResponse response = await _mediator.Send(loginUserCommandRequest)
+            LoginUserCommandResponse response = await _mediator.Send(loginUserCommandRequest);
             return Ok(response);
         }
     }
