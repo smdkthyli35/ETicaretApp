@@ -15,6 +15,7 @@ namespace ETicaretApp.Application
         {
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
             services.AddScoped<ProductBusinessRules>();
+            services.AddHttpClient();
         }
     }
 }
