@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ETicaretApp.Application.Abstractions.Services.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ETicaretApp.Application.Abstractions.Services
 {
-    public class IAuthService
+    public interface IAuthService : IExternalAuthentication, IInternalAuthentication
     {
     }
 }

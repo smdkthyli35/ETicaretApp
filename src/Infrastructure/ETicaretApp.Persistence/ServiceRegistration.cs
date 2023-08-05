@@ -1,4 +1,5 @@
 ﻿using ETicaretApp.Application.Abstractions.Services;
+using ETicaretApp.Application.Abstractions.Services.Authentication;
 using ETicaretApp.Application.Repositories;
 using ETicaretApp.Domain.Entities.Identity;
 using ETicaretApp.Persistence.Contexts;
@@ -47,6 +48,9 @@ namespace ETicaretApp.Persistence
             services.AddScoped<IInvoiceFileWriteRepository, InvoiceFileWriteRepository>();
 
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IExternalAuthentication, AuthService>();
+            services.AddScoped<IInternalAuthentication, AuthService>();
         }
     }
 }
