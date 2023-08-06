@@ -27,7 +27,7 @@ namespace ETicaretApp.Infrastructure.Services.Token
 
             SigningCredentials signingCredentials = new(securityKey, SecurityAlgorithms.HmacSha256);
 
-            token.Expiration = DateTime.UtcNow.AddMinutes(second);
+            token.Expiration = DateTime.UtcNow.AddSeconds(second);
 
             JwtSecurityToken securityToken = new(
                 audience: _configuration["Token:Audience"],
