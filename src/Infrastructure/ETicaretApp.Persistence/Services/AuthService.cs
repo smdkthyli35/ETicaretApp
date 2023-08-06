@@ -2,16 +2,12 @@
 using ETicaretApp.Application.Abstractions.Token;
 using ETicaretApp.Application.Dtos;
 using ETicaretApp.Application.Dtos.Facebook;
-using MediatR;
+using ETicaretApp.Application.Exceptions;
+using ETicaretApp.Domain.Entities.Identity;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace ETicaretApp.Persistence.Services
 {
@@ -21,16 +17,18 @@ namespace ETicaretApp.Persistence.Services
         private readonly IConfiguration _configuration;
         private readonly UserManager<Domain.Entities.Identity.AppUser> _userManager;
         private readonly ITokenHandler _tokenHandler;
+        private readonly SignInManager<Domain.Entities.Identity.AppUser> _signInManager;
 
-        public AuthService(IHttpClientFactory httpClientFactory, IConfiguration configuration, UserManager<Domain.Entities.Identity.AppUser> userManager, ITokenHandler tokenHandler)
+        public AuthService(IHttpClientFactory httpClientFactory, IConfiguration configuration, UserManager<Domain.Entities.Identity.AppUser> userManager, ITokenHandler tokenHandler, SignInManager<AppUser> signInManager)
         {
             _httpClient = httpClientFactory.CreateClient();
             _configuration = configuration;
             _userManager = userManager;
             _tokenHandler = tokenHandler;
+            _signInManager = signInManager;
         }
 
-        public async Task<Token> FacebookLoginAsync(string authToken)
+        public async Task<Token> FacebookLoginAsync(string authToken, int accessTokenLifeTime)
         {
             string accessTokenResponse = await _httpClient.GetStringAsync(
                 $"https://graph.facebook.com/oauth/access_token?client_id={_configuration["ExternalLoginSettings:Facebook:Client_ID"]}" +
@@ -50,44 +48,75 @@ namespace ETicaretApp.Persistence.Services
                 var info = new UserLoginInfo("FACEBOOK", validation.Data.UserId, "FACEBOOK");
                 Domain.Entities.Identity.AppUser user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
 
-                bool result = user != null;
-                if (user == null)
-                {
-                    user = await _userManager.FindByEmailAsync(userInfo?.Email);
-                    if (user == null)
-                    {
-                        user = new()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Email = userInfo?.Email,
-                            UserName = userInfo?.Email,
-                            NameSurname = userInfo?.Name
-                        };
-                        var identityResult = await _userManager.CreateAsync(user);
-                        result = identityResult.Succeeded;
-                    }
-                }
-
-                if (result)
-                {
-                    await _userManager.AddLoginAsync(user, info); //AspNetUserLogins
-
-                    Token token = _tokenHandler.CreateAccessToken(5);
-                    return token;
-                }
-
+                return await CreateUserExternalAsync(user, userInfo.Email, userInfo.Name, info, accessTokenLifeTime);
             }
+
             throw new Exception("Invalid external authentication.");
         }
 
-        public Task<Token> GoogleLoginAsync(string idToken)
+        public async Task<Token> GoogleLoginAsync(string idToken, int accessTokenLifeTime)
         {
-            throw new NotImplementedException();
+            var settings = new GoogleJsonWebSignature.ValidationSettings()
+            {
+                Audience = new List<string> { _configuration["ExternalLoginSettings:Google:Client_ID"] },
+            };
+
+            var payload = await GoogleJsonWebSignature.ValidateAsync(idToken, settings);
+
+            var info = new UserLoginInfo("GOOGLE", payload.Subject, "GOOGLE");
+            Domain.Entities.Identity.AppUser user = await _userManager.FindByLoginAsync(info.LoginProvider, info.ProviderKey);
+
+            return await CreateUserExternalAsync(user, payload.Email, payload.Name, info, accessTokenLifeTime);
         }
 
-        public Task LoginAsync()
+        public async Task<Token> LoginAsync(string usernameOrEmail, string password, int accessTokenLifeTime)
         {
-            throw new NotImplementedException();
+            Domain.Entities.Identity.AppUser user = await _userManager.FindByNameAsync(usernameOrEmail);
+            if (user is null)
+                user = await _userManager.FindByEmailAsync(usernameOrEmail);
+
+            if (user is null)
+                throw new NotFoundUserException();
+
+            SignInResult result = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+            if (result.Succeeded)
+            {
+                Token token = _tokenHandler.CreateAccessToken(accessTokenLifeTime);
+                return token;
+            }
+
+            throw new AuthenticationErrorException();
+        }
+
+        private async Task<Token> CreateUserExternalAsync(AppUser user, string email, string name, UserLoginInfo info, int accessTokenLifeTime)
+        {
+            bool result = user != null;
+            if (user == null)
+            {
+                user = await _userManager.FindByEmailAsync(email);
+                if (user == null)
+                {
+                    user = new()
+                    {
+                        Id = Guid.NewGuid().ToString(),
+                        Email = email,
+                        UserName = email,
+                        NameSurname = name
+                    };
+                    var identityResult = await _userManager.CreateAsync(user);
+                    result = identityResult.Succeeded;
+                }
+            }
+
+            if (result)
+            {
+                await _userManager.AddLoginAsync(user, info); //AspNetUserLogins
+
+                Token token = _tokenHandler.CreateAccessToken(accessTokenLifeTime);
+                return token;
+            }
+
+            throw new Exception("Invalid external authentication.");
         }
     }
 }
