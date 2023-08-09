@@ -47,14 +47,9 @@ namespace ETicaretApp.Persistence.Services
 
         public async Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate)
         {
-            if (user is not null)
-            {
-                user.RefreshToken = refreshToken;
-                user.RefreshTokenEndDate = accessTokenDate.AddSeconds(addOnAccessTokenDate);
-                await _userManager.UpdateAsync(user);
-            }
-            else
-                throw new NotFoundUserException();
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenEndDate = accessTokenDate.AddSeconds(addOnAccessTokenDate);
+            await _userManager.UpdateAsync(user);
         }
     }
 }
