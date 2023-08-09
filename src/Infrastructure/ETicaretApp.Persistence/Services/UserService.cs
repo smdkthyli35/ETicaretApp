@@ -1,5 +1,6 @@
 ﻿using ETicaretApp.Application.Abstractions.Services;
 using ETicaretApp.Application.Dtos.User;
+using ETicaretApp.Application.Exceptions;
 using ETicaretApp.Application.Features.Commands.AppUser.CreateUser;
 using ETicaretApp.Domain.Entities.Identity;
 using MediatR;
@@ -42,6 +43,18 @@ namespace ETicaretApp.Persistence.Services
                 }
 
             return response;
+        }
+
+        public async Task UpdateRefreshToken(string refreshToken, AppUser user, DateTime accessTokenDate, int addOnAccessTokenDate)
+        {
+            if (user is not null)
+            {
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenEndDate = accessTokenDate.AddSeconds(addOnAccessTokenDate);
+                await _userManager.UpdateAsync(user);
+            }
+            else
+                throw new NotFoundUserException();
         }
     }
 }
