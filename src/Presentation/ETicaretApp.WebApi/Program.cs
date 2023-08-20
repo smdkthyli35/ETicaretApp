@@ -6,6 +6,7 @@ using ETicaretApp.Infrastructure.Services.Storage.Azure;
 using ETicaretApp.Infrastructure.Services.Storage.Local;
 using ETicaretApp.Persistence;
 using ETicaretApp.WebApi.Configurations.ColumnWriters;
+using ETicaretApp.WebApi.Extensions;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -98,6 +99,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.ConfigureExceptionHandler<Program>(app.Services.GetRequiredService<ILogger<Program>>());
+
 app.UseStaticFiles();
 
 app.UseSerilogRequestLogging();
@@ -109,7 +112,7 @@ app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
-
+ 
 app.UseAuthorization();
 
 app.Use(async (context, next) =>
