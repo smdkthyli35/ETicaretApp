@@ -5,11 +5,13 @@ using ETicaretApp.Infrastructure.Filters;
 using ETicaretApp.Infrastructure.Services.Storage.Azure;
 using ETicaretApp.Infrastructure.Services.Storage.Local;
 using ETicaretApp.Persistence;
+using ETicaretApp.SignalR;
 using ETicaretApp.WebApi.Configurations.ColumnWriters;
 using ETicaretApp.WebApi.Extensions;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -27,6 +29,7 @@ builder.Services.AddControllers(options => options.Filters.Add<ValidationFilter>
 builder.Services.AddPersistenceServices(builder.Configuration);
 builder.Services.AddInfrastractureServices();
 builder.Services.AddApplicationServices();
+builder.Services.AppSignalRServices();
 
 builder.Services.AddStorage<LocalStorage>();
 //builder.Services.AddStorage<AzureStorage>();
@@ -38,7 +41,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
 
 builder.Services.AddCors(options => options.AddDefaultPolicy(policy =>
 {
-    policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod();
+    policy.WithOrigins("http://localhost:4200", "https://localhost:4200").AllowAnyHeader().AllowAnyMethod().AllowCredentials();
 }));
 
 Logger log = new LoggerConfiguration()
@@ -112,7 +115,7 @@ app.UseCors();
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
- 
+
 app.UseAuthorization();
 
 app.Use(async (context, next) =>
@@ -123,5 +126,7 @@ app.Use(async (context, next) =>
 });
 
 app.MapControllers();
+
+app.MapHubs();
 
 app.Run();

@@ -22,6 +22,7 @@
     <ProjectReference Include="..\..\Core\ETicaretApp.Application\ETicaretApp.Application.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ETicaretApp.Infrastructure\ETicaretApp.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ETicaretApp.Persistence\ETicaretApp.Persistence.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ETicaretApp.SignalR\ETicaretApp.SignalR.csproj" />
   </ItemGroup>
 
   <ItemGroup>

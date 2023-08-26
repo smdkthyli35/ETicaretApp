@@ -11,15 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{2C9F785D-402A-42EB-9AC8-C30FAE3B1262}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETicaretApp.Domain", "src\Core\ETicaretApp.Domain\ETicaretApp.Domain.csproj", "{52A57AF0-D8A3-4465-B4D2-BA09A91C70BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaretApp.Domain", "src\Core\ETicaretApp.Domain\ETicaretApp.Domain.csproj", "{52A57AF0-D8A3-4465-B4D2-BA09A91C70BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETicaretApp.Application", "src\Core\ETicaretApp.Application\ETicaretApp.Application.csproj", "{FE07E862-4DE9-489F-B72C-700F391ECEB3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaretApp.Application", "src\Core\ETicaretApp.Application\ETicaretApp.Application.csproj", "{FE07E862-4DE9-489F-B72C-700F391ECEB3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETicaretApp.Infrastructure", "src\Infrastructure\ETicaretApp.Infrastructure\ETicaretApp.Infrastructure.csproj", "{8828FB5B-3DE5-4359-A448-C43EE296441E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaretApp.Infrastructure", "src\Infrastructure\ETicaretApp.Infrastructure\ETicaretApp.Infrastructure.csproj", "{8828FB5B-3DE5-4359-A448-C43EE296441E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETicaretApp.Persistence", "src\Infrastructure\ETicaretApp.Persistence\ETicaretApp.Persistence.csproj", "{8CCFD876-DB1D-46A4-B19E-C647E3A6CE54}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaretApp.Persistence", "src\Infrastructure\ETicaretApp.Persistence\ETicaretApp.Persistence.csproj", "{8CCFD876-DB1D-46A4-B19E-C647E3A6CE54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETicaretApp.WebApi", "src\Presentation\ETicaretApp.WebApi\ETicaretApp.WebApi.csproj", "{FEF2166B-7E4F-40B4-8D79-9C6BB985C565}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ETicaretApp.WebApi", "src\Presentation\ETicaretApp.WebApi\ETicaretApp.WebApi.csproj", "{FEF2166B-7E4F-40B4-8D79-9C6BB985C565}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ETicaretApp.SignalR", "src\Infrastructure\ETicaretApp.SignalR\ETicaretApp.SignalR.csproj", "{2E12D1F3-FA49-48AE-8277-7460C6EDFC4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{FEF2166B-7E4F-40B4-8D79-9C6BB985C565}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEF2166B-7E4F-40B4-8D79-9C6BB985C565}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEF2166B-7E4F-40B4-8D79-9C6BB985C565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E12D1F3-FA49-48AE-8277-7460C6EDFC4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E12D1F3-FA49-48AE-8277-7460C6EDFC4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E12D1F3-FA49-48AE-8277-7460C6EDFC4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E12D1F3-FA49-48AE-8277-7460C6EDFC4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{8828FB5B-3DE5-4359-A448-C43EE296441E} = {D1F2DDBA-7BB7-4491-BD8B-92BC283B5CA1}
 		{8CCFD876-DB1D-46A4-B19E-C647E3A6CE54} = {D1F2DDBA-7BB7-4491-BD8B-92BC283B5CA1}
 		{FEF2166B-7E4F-40B4-8D79-9C6BB985C565} = {2C9F785D-402A-42EB-9AC8-C30FAE3B1262}
+		{2E12D1F3-FA49-48AE-8277-7460C6EDFC4C} = {D1F2DDBA-7BB7-4491-BD8B-92BC283B5CA1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D50F96F3-0635-4E3D-AA12-DDFC29097AD9}
