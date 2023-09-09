@@ -3,6 +3,7 @@ using System;
 using ETicaretApp.Persistence.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ETicaretApp.Persistence.Migrations
 {
     [DbContext(typeof(ETicaretAppDbContext))]
-    partial class ETicaretAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230909120443_mig_11")]
+    partial class mig_11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,6 +33,9 @@ namespace ETicaretApp.Persistence.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uuid");
+
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -39,6 +44,9 @@ namespace ETicaretApp.Persistence.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OrderId")
+                        .IsUnique();
 
                     b.HasIndex("UserId");
 
@@ -231,11 +239,15 @@ namespace ETicaretApp.Persistence.Migrations
             modelBuilder.Entity("ETicaretApp.Domain.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<Guid>("BasketId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -442,11 +454,19 @@ namespace ETicaretApp.Persistence.Migrations
 
             modelBuilder.Entity("ETicaretApp.Domain.Entities.Basket", b =>
                 {
+                    b.HasOne("ETicaretApp.Domain.Entities.Order", "Order")
+                        .WithOne("Basket")
+                        .HasForeignKey("ETicaretApp.Domain.Entities.Basket", "OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ETicaretApp.Domain.Entities.Identity.AppUser", "User")
                         .WithMany("Baskets")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Order");
 
                     b.Navigation("User");
                 });
@@ -477,14 +497,6 @@ namespace ETicaretApp.Persistence.Migrations
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("ETicaretApp.Domain.Entities.Basket", "Basket")
-                        .WithOne("Order")
-                        .HasForeignKey("ETicaretApp.Domain.Entities.Order", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Basket");
 
                     b.Navigation("Customer");
                 });
@@ -573,9 +585,6 @@ namespace ETicaretApp.Persistence.Migrations
             modelBuilder.Entity("ETicaretApp.Domain.Entities.Basket", b =>
                 {
                     b.Navigation("BasketItems");
-
-                    b.Navigation("Order")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("ETicaretApp.Domain.Entities.Customer", b =>
@@ -586,6 +595,12 @@ namespace ETicaretApp.Persistence.Migrations
             modelBuilder.Entity("ETicaretApp.Domain.Entities.Identity.AppUser", b =>
                 {
                     b.Navigation("Baskets");
+                });
+
+            modelBuilder.Entity("ETicaretApp.Domain.Entities.Order", b =>
+                {
+                    b.Navigation("Basket")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("ETicaretApp.Domain.Entities.Product", b =>

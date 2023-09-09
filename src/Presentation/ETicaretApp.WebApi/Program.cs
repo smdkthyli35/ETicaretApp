@@ -35,6 +35,8 @@ builder.Services.AddStorage<LocalStorage>();
 //builder.Services.AddStorage<AzureStorage>();
 //builder.Services.AddStorage(ETicaretApp.Infrastructure.Enums.StorageType.Azure);
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddFluentValidationClientsideAdapters();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateProductValidator>();
