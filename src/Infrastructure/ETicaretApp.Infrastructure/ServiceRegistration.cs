@@ -1,8 +1,10 @@
 ﻿using ETicaretApp.Application.Abstractions.Services;
+using ETicaretApp.Application.Abstractions.Services.Configurations;
 using ETicaretApp.Application.Abstractions.Storage;
 using ETicaretApp.Application.Abstractions.Token;
 using ETicaretApp.Infrastructure.Enums;
 using ETicaretApp.Infrastructure.Services;
+using ETicaretApp.Infrastructure.Services.Configurations;
 using ETicaretApp.Infrastructure.Services.Storage;
 using ETicaretApp.Infrastructure.Services.Storage.Azure;
 using ETicaretApp.Infrastructure.Services.Storage.Local;
@@ -19,6 +21,7 @@ namespace ETicaretApp.Infrastructure
             services.AddScoped<IStorageService, StorageService>();
             services.AddScoped<ITokenHandler, TokenHandler>();
             services.AddScoped<IMailService, MailService>();
+            services.AddScoped<IApplicationService, ApplicationService>();
         }
 
         public static void AddStorage<T>(this IServiceCollection services) where T : Storage, IStorage
