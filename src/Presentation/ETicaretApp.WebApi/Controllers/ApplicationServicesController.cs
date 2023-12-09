@@ -15,6 +15,7 @@ namespace ETicaretApp.WebApi.Controllers
             _applicationService = applicationService;
         }
 
+        [HttpGet]
         public IActionResult GetAuthorizeDefinitionEndpoints()
         {
             var datas = _applicationService.GetAuthorizeDefinitionEndpoints(typeof(Program));
